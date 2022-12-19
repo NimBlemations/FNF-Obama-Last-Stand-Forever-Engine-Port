@@ -1,3 +1,17 @@
+----------------------------------------------
+This is a port of Last Stand from the Vs. Haunted House mod
+
+It features:
+* The notes;
+* The stage;
+* The unending camera offset;
+* Modified autoplay;
+* Anger
+
+Features I have yet to put in:
+* Special notesplashes
+----------------------------------------------
+
 <p align="center">
   <img src="https://media.discordapp.net/attachments/916918345255751690/930068118938730526/legacy.png" width="750"/></a>
   <h1 align="center">Forever Engine Legacy</h1>

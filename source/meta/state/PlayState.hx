@@ -1106,7 +1106,7 @@ class PlayState extends MusicBeatState
 		if (autoplay)
 		{
 			// check if the note was a good hit
-			if (daNote.strumTime <= Conductor.songPosition && (daNote.noteType == 0 || daNote.noteType == 2))
+			if (daNote.strumTime <= Conductor.songPosition && (daNote.noteType == 0 || daNote.noteType == 2 || !daNote.mustPress)) // The daNote.mustPress due to dev intention of using death notes for the opponent to play
 			{
 				// use a switch thing cus it feels right idk lol
 				// make sure the strum is played for the autoplay stuffs
