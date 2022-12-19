@@ -885,9 +885,11 @@ class PlayState extends MusicBeatState
 								daNote.tooLate = true;
 								for (note in daNote.childrenNotes)
 									note.tooLate = true;
+								
+								var youMadeMistake:Bool = daNote.noteType == 2;
 
 								vocals.volume = 0;
-								missNoteCheck((Init.trueSettings.get('Ghost Tapping')) ? true : false, daNote.noteData, boyfriend, true);
+								missNoteCheck((Init.trueSettings.get('Ghost Tapping')) ? true : false, daNote.noteData, boyfriend, true, false, youMadeMistake ? 20 : 1);
 								// ambiguous name
 								Timings.updateAccuracy(0);
 							}
@@ -987,7 +989,7 @@ class PlayState extends MusicBeatState
 				for (myRating in Timings.judgementsMap.keys())
 				{
 					var myThreshold:Float = Timings.judgementsMap.get(myRating)[1];
-					if (noteDiff <= myThreshold && (myThreshold < lowestThreshold))
+					if (noteDiff <= myThreshold && (myThreshold < lowestThreshold) && coolNote.noteType < 3 && coolNote.noteType != 1)
 					{
 						foundRating = myRating;
 						lowestThreshold = myThreshold;
@@ -1000,7 +1002,17 @@ class PlayState extends MusicBeatState
 					popUpScore(foundRating, ratingTiming, characterStrums, coolNote);
 					if (coolNote.childrenNotes.length > 0)
 						Timings.notesHit++;
-					healthCall(Timings.judgementsMap.get(foundRating)[3]);
+					var multiplier:Float = 1;
+					switch (coolNote.noteType)
+					{
+						case 1:
+							multiplier = 10;
+						case 3:
+							multiplier = 3;
+						case 4:
+							multiplier = 20;
+					}
+					healthCall(Timings.judgementsMap.get(foundRating)[3] * multiplier);
 				}
 				else if (coolNote.isSustainNote)
 				{
@@ -1019,7 +1031,7 @@ class PlayState extends MusicBeatState
 		}
 	}
 
-	function missNoteCheck(?includeAnimation:Bool = false, direction:Int = 0, character:Character, popMiss:Bool = false, lockMiss:Bool = false)
+	function missNoteCheck(?includeAnimation:Bool = false, direction:Int = 0, character:Character, popMiss:Bool = false, lockMiss:Bool = false, multiplier:Float = 1)
 	{
 		if (includeAnimation)
 		{
@@ -1028,7 +1040,7 @@ class PlayState extends MusicBeatState
 			FlxG.sound.play(Paths.soundRandom('missnote', 1, 3), FlxG.random.float(0.1, 0.2));
 			character.playAnim('sing' + stringDirection.toUpperCase() + 'miss', lockMiss);
 		}
-		decreaseCombo(popMiss);
+		decreaseCombo(popMiss, multiplier);
 
 		//
 	}
@@ -1159,17 +1171,17 @@ class PlayState extends MusicBeatState
 				if ((PlayState.SONG.notes[Std.int(curStep / 16)].mustHitSection && mustHit)
 					|| (!PlayState.SONG.notes[Std.int(curStep / 16)].mustHitSection && !mustHit))
 				{
-					camDisplaceX = 0;
+					// camDisplaceX = 0;
 					if (cStrum.members[0].animation.curAnim.name == 'confirm')
-						camDisplaceX -= camDisplaceExtend;
+						camDisplaceX = -camDisplaceExtend;
 					if (cStrum.members[3].animation.curAnim.name == 'confirm')
-						camDisplaceX += camDisplaceExtend;
+						camDisplaceX = camDisplaceExtend;
 
-					camDisplaceY = 0;
+					// camDisplaceY = 0; // commented for mechanic purposes, this is a port, after all, but a practical one...
 					if (cStrum.members[1].animation.curAnim.name == 'confirm')
-						camDisplaceY += camDisplaceExtend;
+						camDisplaceY = camDisplaceExtend;
 					if (cStrum.members[2].animation.curAnim.name == 'confirm')
-						camDisplaceY -= camDisplaceExtend;
+						camDisplaceY = -camDisplaceExtend;
 				}
 			}
 		}
@@ -1327,7 +1339,7 @@ class PlayState extends MusicBeatState
 		}
 	}
 
-	function decreaseCombo(?popMiss:Bool = false)
+	function decreaseCombo(?popMiss:Bool = false, multiplier:Float = 1)
 	{
 		// painful if statement
 		if (((combo > 5) || (combo < 0)) && (gf.animOffsets.exists('sad')))
@@ -1347,7 +1359,7 @@ class PlayState extends MusicBeatState
 		{
 			// doesnt matter miss ratings dont have timings
 			displayRating("miss", 'late');
-			healthCall(Timings.judgementsMap.get("miss")[3]);
+			healthCall(Timings.judgementsMap.get("miss")[3] * multiplier);
 		}
 		popUpCombo();
 
@@ -1506,7 +1518,7 @@ class PlayState extends MusicBeatState
 	function sortByShit(Obj1:Note, Obj2:Note):Int
 		return FlxSort.byValues(FlxSort.ASCENDING, Obj1.strumTime, Obj2.strumTime);
 
-	function resyncVocals():Void
+	function resyncVocals():Void // Look, I fucking changed it because the fucking lag jumped it forward too fucking much, I hated it.
 	{
 		trace('resyncing vocal time ${vocals.time}');
 		songMusic.pause();

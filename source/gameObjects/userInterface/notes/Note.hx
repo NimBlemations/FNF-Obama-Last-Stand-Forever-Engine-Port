@@ -103,6 +103,11 @@ class Note extends FNFSprite
 	{
 		switch (type)
 		{
+			case 1:
+				if (backDir)
+					return 'ghost';
+				else
+					return 'NOTE_ghost';
 			case 2:
 				if (backDir)
 					return 'spam';
@@ -113,6 +118,11 @@ class Note extends FNFSprite
 					return 'trap';
 				else
 					return 'Trap_Notes';
+			case 4:
+				if (backDir)
+					return 'thorn';
+				else
+					return 'Thorn_Notes';
 			default:
 				if (backDir)
 					return 'notes';
