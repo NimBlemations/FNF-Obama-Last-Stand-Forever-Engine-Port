@@ -1,5 +1,5 @@
 ----------------------------------------------
-This is a port of Last Stand from the Vs. Haunted House mod
+This is a port of Last Stand from the FNF: Haunted House mod
 
 It features:
 * The notes;
