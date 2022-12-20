@@ -6,10 +6,12 @@ It features:
 * The stage;
 * The unending camera offset;
 * Modified autoplay;
+* New resync (previous one fucking lagged behind and drove me crazy)
 * Anger
 
 Features I have yet to put in:
-* Special notesplashes
+* Special notesplashes;
+* Health bar colours
 ----------------------------------------------
 
 <p align="center">
