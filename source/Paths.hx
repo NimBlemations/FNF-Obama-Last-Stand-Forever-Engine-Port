@@ -303,14 +303,14 @@ class Paths
 		return 'assets/fonts/$key';
 	}
 
-	inline static public function getSparrowAtlas(key:String, ?library:String)
+	inline static public function getSparrowAtlas(key:String, ?library:String, ?textureCompression:Bool = false)
 	{
-		var graphic:FlxGraphic = returnGraphic(key, library);
+		var graphic:FlxGraphic = returnGraphic(key, library, textureCompression);
 		return (FlxAtlasFrames.fromSparrow(graphic, File.getContent(file('images/$key.xml', library))));
 	}
 
-	inline static public function getPackerAtlas(key:String, ?library:String)
+	inline static public function getPackerAtlas(key:String, ?library:String, ?textureCompression:Bool = false)
 	{
-		return (FlxAtlasFrames.fromSpriteSheetPacker(image(key, library), file('images/$key.txt', library)));
+		return (FlxAtlasFrames.fromSpriteSheetPacker(image(key, library, textureCompression), file('images/$key.txt', library)));
 	}
 }
