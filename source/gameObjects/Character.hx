@@ -8,6 +8,7 @@ import flixel.FlxG;
 import flixel.addons.util.FlxSimplex;
 import flixel.animation.FlxBaseAnimation;
 import flixel.graphics.frames.FlxAtlasFrames;
+import flixel.util.FlxColor;
 import gameObjects.userInterface.HealthIcon;
 import meta.*;
 import meta.data.*;
@@ -37,11 +38,15 @@ class Character extends FNFSprite
 
 	public var characterData:CharacterData;
 	public var adjustPos:Bool = true;
+	
+	public var barColor:FlxColor;
 
 	public function new(?isPlayer:Bool = false)
 	{
 		super(x, y);
 		this.isPlayer = isPlayer;
+		
+		barColor = isPlayer ? 0xFF66FF33 : 0xFFFF0000;
 	}
 
 	public function setCharacter(x:Float, y:Float, character:String):Character
@@ -161,6 +166,8 @@ class Character extends FNFSprite
 				animation.addByPrefix('scared', 'BF idle shaking', 24);
 
 				playAnim('idle');
+				
+				barColor = 0xFF31b0d1;
 
 				flipX = true;
 
@@ -214,6 +221,8 @@ class Character extends FNFSprite
 				animation.addByPrefix('singDOWNmiss', 'BF NOTE DOWN MISS', 24, false);
 
 				playAnim('idle');
+				
+				barColor = 0xFF31b0d1;
 
 				flipX = true;
 
@@ -241,6 +250,8 @@ class Character extends FNFSprite
 				animation.addByPrefix('hey', 'BF HEY', 24, false);
 
 				playAnim('idle');
+				
+				barColor = 0xFF31b0d1;
 
 				flipX = true;
 			case 'bf-car':
@@ -258,6 +269,8 @@ class Character extends FNFSprite
 				animation.addByPrefix('singDOWNmiss', 'BF NOTE DOWN MISS', 24, false);
 
 				playAnim('idle');
+				
+				barColor = 0xFF31b0d1;
 
 				flipX = true;
 			case 'bf-pixel':
@@ -281,6 +294,8 @@ class Character extends FNFSprite
 				height -= 100;
 
 				antialiasing = false;
+				
+				barColor = 0xFF7bd6f6;
 
 				flipX = true;
 			case 'bf-pixel-dead':
@@ -307,6 +322,8 @@ class Character extends FNFSprite
 				animation.addByPrefix('singRIGHT', 'Obama Right', 24, false);
 				animation.addByPrefix('singDOWN', 'Obama Down', 24, false);
 				animation.addByPrefix('singLEFT', 'Obama Left', 24, false);
+				
+				barColor = 0xFFFFFFFF; // fuck it, even though they don't actually have a barColor, i'm setting one anyway.
 
 				playAnim('idle');
 				
